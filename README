@@ -17,24 +17,24 @@ In config.ru:
 
  require 'rack/adapter/sandboxed_rails'
 
- map '/rails1' do
-   run Rack::Adapter::Sandbox.new %{
-     Rack::Adapter::Rails.new(:root => '/path/to/a/rails_app', :prefix => '/rails1')
-   }
+ map 'http://myfirstapp.com' do
+   run Rack::Adapter::SandboxedRails.new(:root => '/path/to/a/rails_app')
  end
- map '/rails2' do
-   run Rack::Adapter::Sandbox.new %{
-     Rack::Adapter::Rails.new(:root => '/path/to/another/rails_app', :prefix => '/rails2')
-   }
+ map 'http://mysecondapp.com' do
+   run Rack::Adapter::SandboxedRails.new(:root => '/path/to/another/rails_app')
  end
 
 Run using Thin:
 
  thin start -r config.ru
 
-You first Rails app will be available at /rails1 and the second one under /rails2.
+You first Rails app will be available at http://myfirstapp.com and the second one under http://mysecondapp.com.
 
 Enjoy!
+
+=== Limitation
+The Rack Sandbox is still very hackish, it's works with very bare bone Rails application,
+no gems, no session, no database. Some more hacking needs to be done to support a full app.
 
 === License
 Ruby License, http://www.ruby-lang.org/en/LICENSE.txt
